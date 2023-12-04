@@ -7,14 +7,16 @@ from transformers import PreTrainedTokenizer, default_data_collator
 def prepare_tfns_inference_dataloader(
         dataset_config: TFNSConfig,
         tokenizer: PreTrainedTokenizer,
+        model_name: str
 ) -> DataLoader:
     tfns_inference_dataset = load_from_disk(dataset_config.dataset_path)["validation"]
     tfns_inference_dataset = tfns_inference_dataset.to_list()
     for sample in tfns_inference_dataset:
-        sample["text"] = \
-            "Instruction: What is the sentiment of this tweet? Please choose an answer from {negative/neutral/positive}.\n" + \
-            f"Input: {sample['text']}\n" + \
-            "Answer: "
+        if model_name.lower() != "finbert":
+            sample["text"] = \
+                "Instruction: What is the sentiment of this tweet? Please choose an answer from {negative/neutral/positive}.\n" + \
+                f"Input: {sample['text']}\n" + \
+                "Answer: "
     tfns_inference_dataset = Dataset.from_list(tfns_inference_dataset)
     tfns_inference_dataset = tfns_inference_dataset.map(
         lambda sample: tokenizer(

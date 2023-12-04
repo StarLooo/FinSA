@@ -17,15 +17,18 @@ _label_mapping = {
 def prepare_nwgi_inference_dataloader(
         dataset_config: NWGIConfig,
         tokenizer: PreTrainedTokenizer,
+        model_name: str
 ) -> DataLoader:
     nwgi_inference_dataset = load_from_disk(dataset_config.dataset_path)["test"]
     nwgi_inference_dataset = nwgi_inference_dataset.to_list()
     for sample in nwgi_inference_dataset:
+
         sample["label"] = _label_mapping[sample["label"]]
-        sample["news"] = \
-            "Instruction: What is the sentiment of this news? Please choose an answer from {negative/neutral/positive}.\n" + \
-            f"Input: {sample['news']}\n" + \
-            "Answer: "
+        if model_name.lower() != "finbert":
+            sample["news"] = \
+                "Instruction: What is the sentiment of this news? Please choose an answer from {negative/neutral/positive}.\n" + \
+                f"Input: {sample['news']}\n" + \
+                "Answer: "
     nwgi_inference_dataset = Dataset.from_list(nwgi_inference_dataset)
     nwgi_inference_dataset = nwgi_inference_dataset.map(
         lambda sample: tokenizer(
