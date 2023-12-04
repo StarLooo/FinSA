@@ -8,7 +8,11 @@ MODEL_PATHS = {  # local model paths due to missing connection to huggingface
     "llama2-chat": f"/remote-home/share/models/llama_v2_hf/7b-chat",
     "alpaca": f"/remote-home/xylu/hf_download/models/alpaca-7b",
     "vicuna": f"/remote-home/share/models/llama_v2_hf/vicuna-7b-v1.5",
-    "fingpt-v3.2": f"/remote-home/xylu/hf_download/models/FinGPT_v32_Llama2_Sentiment_Instruction_LoRA_FT"
+    "fingpt-v3.2": f"/remote-home/xylu/hf_download/models/FinGPT_v32_Llama2_Sentiment_Instruction_LoRA_FT",
+    "llama2-13b-hf":"NousResearch/Llama-2-13b-hf",
+    "fingpt-v3.3-hf":"FinGPT/fingpt-sentiment_llama2-13b_lora",
+    "chatglm-hf": "THUDM/chatglm2-6b",
+    "fingpt-v3.1-hf": "oliverwang15/FinGPT_v31_ChatGLM2_Sentiment_Instruction_LoRA_FT",
 }
 
 
@@ -57,5 +61,19 @@ class LlamaFamilyModelConfig(BaseModelConfig):
                 self.model_path = MODEL_PATHS["llama2-chat"]
             if not self.peft_model_path:
                 self.peft_model_path = MODEL_PATHS["fingpt-v3.2"]
+        elif model_name == "fingpt-v3.3":
+            self.load_peft = True
+            self.pad_token_use = self.pad_token_use or "unk"
+            if not self.model_path:
+                self.model_path = MODEL_PATHS["llama2-13b-hf"]
+            if not self.peft_model_path:
+                self.peft_model_path = MODEL_PATHS["fingpt-v3.3-hf"]
+        elif model_name == "fingpt-v3.1":
+            self.load_peft = True
+            self.pad_token_use = self.pad_token_use or "unk"
+            if not self.model_path:
+                self.model_path = MODEL_PATHS["chatglm-hf"]
+            if not self.peft_model_path:
+                self.peft_model_path = MODEL_PATHS["fingpt-v3.1-hf"]
         else:
             raise NotImplementedError

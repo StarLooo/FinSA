@@ -1,5 +1,6 @@
 from .base_model_config import BaseModelConfig
 from .llama_family_model_config import LlamaFamilyModelConfig
+from .chatglm_model_config import ChatGlmModelConfig
 from .bert_config import BertConfig
 
 __all__ = [
@@ -9,4 +10,6 @@ __all__ = [
     "LlamaFamilyModelConfig",
     # from bert_config.py
     "BertConfig",
+    #
+    "ChatGlmModelConfig",
 ]

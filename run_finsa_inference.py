@@ -88,13 +88,16 @@ def main(**kwargs):
     ### extract model_name and datasets
     model_name = kwargs.pop("model_name", "fingpt-v3.2")
     datasets = kwargs.pop("datasets", "fpb,fiqa,tfns,nwgi")
+    load_in_8bit = kwargs.pop("load_in_8bit", False)
     print(f"Test {model_name} on datasets: {datasets}")
 
     ### construct configs and update using kwargs
     if model_name.lower() == "finbert":
         model_config = BertConfig(model_name=model_name)
+    elif model_name.lower() == "fingpt-v3.1":
+        model_config = ChatGlmModelConfig(model_name=model_name)
     else:
-        model_config = LlamaFamilyModelConfig(model_name=model_name)
+        model_config = LlamaFamilyModelConfig(model_name=model_name, load_in_8bit=load_in_8bit)
     dataset_configs = []
     for dataset in datasets:
         if dataset == 'fpb':

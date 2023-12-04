@@ -12,4 +12,5 @@ __all__ = [
     "BaseModelConfig",
     "LlamaFamilyModelConfig",
     "BertConfig",
+    "ChatGlmModelConfig",
 ]
