@@ -1,5 +1,6 @@
 import time
 import fire
+import numpy as np
 import torch
 from tqdm import tqdm
 from torch import inference_mode
@@ -30,6 +31,13 @@ ID_2_SENTIMENT = {
         2: 'neutral',
     }
 }
+BERT = {
+
+    0: "positive",
+    1: 'negative',
+    2: 'neutral',
+
+}
 
 
 ### todo: you need to implement this method
@@ -40,7 +48,31 @@ def finbert_inference(
         model: PreTrainedModel,
         tokenizer: PreTrainedTokenizer,
 ):
-    pass
+
+    model.eval()
+    predictions, references = [], []
+
+    for batch in tqdm(task_dataloader):
+        # prepare generate inputs
+
+        input_ids = batch["input_ids"].cuda()
+        attention_mask = batch["attention_mask"].cuda()
+        reference = [ID_2_SENTIMENT[task_name][x.item()] for x in batch["labels"]]
+
+        token_type_ids = batch["token_type_ids"].cuda()
+        model = model.cuda()
+        results = model(input_ids, attention_mask, token_type_ids)
+        logits = results.logits
+
+        prediction = torch.argmax(logits, dim=1).cpu().numpy()
+        prediction = [BERT[x.item()] for x in prediction]
+
+        references.extend(reference)
+        predictions.extend(prediction)
+        torch.cuda.empty_cache()
+
+    return predictions, references
+
 
 
 @inference_mode(mode=True)
@@ -135,21 +167,26 @@ def main(**kwargs):
             task_dataloader = prepare_fpb_inference_dataloader(
                 dataset_config=dataset_config,
                 tokenizer=tokenizer,
+                model_name=model_name
             )
         elif dataset_config.dataset_name == "fiqa-2018":
+
             task_dataloader = prepare_fiqa_inference_dataloader(
                 dataset_config=dataset_config,
                 tokenizer=tokenizer,
+                model_name=model_name
             )
         elif dataset_config.dataset_name == "news_with_gpt_instructions":
             task_dataloader = prepare_nwgi_inference_dataloader(
                 dataset_config=dataset_config,
                 tokenizer=tokenizer,
+                model_name=model_name
             )
         elif dataset_config.dataset_name == "twitter-financial-news-sentiment":
             task_dataloader = prepare_tfns_inference_dataloader(
                 dataset_config=dataset_config,
                 tokenizer=tokenizer,
+                model_name=model_name
             )
         else:
             raise NotImplementedError

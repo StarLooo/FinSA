@@ -7,15 +7,18 @@ from transformers import PreTrainedTokenizer, default_data_collator
 def prepare_fpb_inference_dataloader(
         dataset_config: FPBConfig,
         tokenizer: PreTrainedTokenizer,
+        model_name: str
 ) -> DataLoader:
     fpb_dataset = load_from_disk(dataset_config.dataset_path)["train"]
     fpb_inference_dataset = fpb_dataset.train_test_split(seed=42)['test']
     fpb_inference_dataset = fpb_inference_dataset.to_list()
     for sample in fpb_inference_dataset:
-        sample["sentence"] = \
-            "Instruction: What is the sentiment of this news? Please choose an answer from {negative/neutral/positive}.\n" + \
-            f"Input: {sample['sentence']}\n" + \
-            "Answer: "
+
+        if model_name.lower() != "finbert":
+            sample["sentence"] = \
+                "Instruction: What is the sentiment of this news? Please choose an answer from {negative/neutral/positive}.\n" + \
+                f"Input: {sample['sentence']}\n" + \
+                "Answer: "
     fpb_inference_dataset = Dataset.from_list(fpb_inference_dataset)
     fpb_inference_dataset = fpb_inference_dataset.map(
         lambda sample: tokenizer(

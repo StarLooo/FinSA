@@ -81,4 +81,17 @@ def fingpt_prepare_tokenizer_and_model_inference(
 def finbert_prepare_tokenizer_and_model_inference(
         model_config: BaseModelConfig = None
 ):
-    pass
+    ### load tokenizer
+    tokenizer = model_config.tokenizer_type.from_pretrained(
+        model_config.model_path,
+        do_lower_case=model_config.do_lower_case
+    )
+
+    ### load model
+    model = model_config.model_type.from_pretrained(
+        model_config.model_path,
+        cache_dir=None,
+        num_labels=3
+    )
+
+    return tokenizer, model
