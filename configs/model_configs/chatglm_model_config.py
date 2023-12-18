@@ -1,6 +1,7 @@
 from .base_model_config import BaseModelConfig
-from dataclasses import dataclass, field
-from transformers import AutoModel,  AutoTokenizer, PreTrainedModel, PreTrainedTokenizer
+from dataclasses import dataclass
+from transformers import AutoModel, AutoTokenizer
+
 
 @dataclass
 class ChatGlmModelConfig(BaseModelConfig):

@@ -11,6 +11,6 @@ __all__ = [
     # from model_configs
     "BaseModelConfig",
     "LlamaFamilyModelConfig",
-    "BertConfig",
     "ChatGlmModelConfig",
+    "BertConfig",
 ]

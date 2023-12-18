@@ -2,7 +2,6 @@ from .base_dataset_config import BaseDatasetConfig
 from dataclasses import dataclass
 
 
-### this is enough for FinGPT, but you can add needed things for FinBERT
 @dataclass
 class TFNSConfig(BaseDatasetConfig):
     # inherited args

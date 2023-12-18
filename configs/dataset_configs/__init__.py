@@ -4,6 +4,7 @@ from .fiqa_config import FIQAConfig
 from .tfns_config import TFNSConfig
 from .nwgi_config import NWGIConfig
 
+
 __all__ = [
     # from base_dataset_config.py
     "BaseDatasetConfig",

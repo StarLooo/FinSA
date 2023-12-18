@@ -1,6 +1,5 @@
 import time
 import fire
-import numpy as np
 import torch
 from tqdm import tqdm
 from torch import inference_mode
@@ -31,16 +30,14 @@ ID_2_SENTIMENT = {
         2: 'neutral',
     }
 }
-BERT = {
+FinBERT_ID_2_LABEL = {
 
     0: "positive",
     1: 'negative',
     2: 'neutral',
-
 }
 
 
-### todo: you need to implement this method
 @inference_mode(mode=True)
 def finbert_inference(
         task_name: str,
@@ -48,7 +45,6 @@ def finbert_inference(
         model: PreTrainedModel,
         tokenizer: PreTrainedTokenizer,
 ):
-
     model.eval()
     predictions, references = [], []
 
@@ -65,14 +61,13 @@ def finbert_inference(
         logits = results.logits
 
         prediction = torch.argmax(logits, dim=1).cpu().numpy()
-        prediction = [BERT[x.item()] for x in prediction]
+        prediction = [FinBERT_ID_2_LABEL[x.item()] for x in prediction]
 
         references.extend(reference)
         predictions.extend(prediction)
         torch.cuda.empty_cache()
 
     return predictions, references
-
 
 
 @inference_mode(mode=True)

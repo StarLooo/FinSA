@@ -8,8 +8,8 @@ __all__ = [
     "BaseModelConfig",
     # from llama_family_model_config.py
     "LlamaFamilyModelConfig",
+    # from chatglm_model_config
+    "ChatGlmModelConfig",
     # from bert_config.py
     "BertConfig",
-    #
-    "ChatGlmModelConfig",
 ]

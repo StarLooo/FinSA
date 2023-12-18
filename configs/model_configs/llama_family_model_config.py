@@ -9,14 +9,13 @@ MODEL_PATHS = {  # local model paths due to missing connection to huggingface
     "alpaca": f"/remote-home/xylu/hf_download/models/alpaca-7b",
     "vicuna": f"/remote-home/share/models/llama_v2_hf/vicuna-7b-v1.5",
     "fingpt-v3.2": f"/remote-home/xylu/hf_download/models/FinGPT_v32_Llama2_Sentiment_Instruction_LoRA_FT",
-    "llama2-13b-hf":"NousResearch/Llama-2-13b-hf",
-    "fingpt-v3.3-hf":"FinGPT/fingpt-sentiment_llama2-13b_lora",
+    "llama2-13b-hf": "NousResearch/Llama-2-13b-hf",
+    "fingpt-v3.3-hf": "FinGPT/fingpt-sentiment_llama2-13b_lora",
     "chatglm-hf": "THUDM/chatglm2-6b",
     "fingpt-v3.1-hf": "oliverwang15/FinGPT_v31_ChatGLM2_Sentiment_Instruction_LoRA_FT",
 }
 
 
-# temporary only support 7b size
 @dataclass
 class LlamaFamilyModelConfig(BaseModelConfig):
     # inherited args

@@ -13,4 +13,3 @@ class BaseModelConfig:
     pad_token_use: str = "default"  # unk, bos, eos, additional
     padding_side: str = None  # left, right
     load_in_8bit: bool = False  # do not need when inference on RTX3090
-    do_lower_case: bool = True
